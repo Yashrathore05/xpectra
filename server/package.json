@@ -1,0 +1,41 @@
+{
+  "name": "xpectra-server",
+  "version": "1.0.0",
+  "description": "Server-side component for the Xpectra tracking system",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "analytics",
+    "tracking",
+    "api",
+    "server"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.7.0",
+    "helmet": "^7.0.0",
+    "mongoose": "^7.2.2",
+    "morgan": "^1.10.0",
+    "compression": "^1.7.4",
+    "maxmind": "^4.3.8",
+    "geoip-lite": "^1.4.7",
+    "ua-parser-js": "^1.0.35",
+    "winston": "^3.9.0"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "nodemon": "^2.0.22",
+    "supertest": "^6.3.3"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+} 

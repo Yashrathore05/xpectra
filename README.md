@@ -53,7 +53,7 @@ Xpectra Analytics is a comprehensive web analytics platform that helps you under
    ```bash
    cd dashboard
    # Serve using your preferred method, e.g., with a simple HTTP server
-   python -m http.server 8000
+   python -m http.server 3000
    ```
 
 5. Access the dashboard at `http://localhost:3000`
@@ -169,9 +169,8 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## 📬 Contact
 
 Have questions? Reach out to us:
-- Website: [xpectra.com](https://immersivex.in)
+- Website: [immersivex.in](https://immersivex.in)
 - Email: info@immersivex.in
-- Twitter: [@XpectraAnalytics](https://twitter.com/XpectraAnalytics)
 
 ---
 

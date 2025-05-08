@@ -1,7 +1,7 @@
 # Xpectra Analytics Platform
 
 <div align="center">
-  <img src="assets/logo.png" alt="Xpectra Logo" width="150">
+  <img src="dashboard/assets/logo.png" alt="Xpectra Logo" width="150">
   <h3>Comprehensive Web Analytics for Modern Applications</h3>
   <p>Track, analyze, and optimize your web presence with powerful insights</p>
   

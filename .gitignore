@@ -1,36 +1,34 @@
 # Dependency directories
 node_modules/
-jspm_packages/
+**/node_modules/
 
 # Build outputs
 dist/
 build/
-.next/
-out/
 
-# Environment files
+# Environment variables
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# Debug logs
+# Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-logs
-*.log
-
-# Cache directories
-.npm
-.eslintcache
-.cache/
 
 # Editor directories and files
 .idea/
 .vscode/
-*.swp
-*.swo
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS specific
 .DS_Store
 Thumbs.db 

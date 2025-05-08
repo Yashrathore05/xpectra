@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usage Guide - Xpectra Analytics Dashboard</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../assets/favicon.ico" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Prism.js for code highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/usage.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="../assets/logo.png" alt="Xpectra Logo">
+                    <h1>Xpectra</h1>
+                </div>
+                <button class="toggle-sidebar" id="toggleSidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="../index.html">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="projects.html">
+                            <i class="fas fa-project-diagram"></i>
+                            <span>Projects</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="settings.html">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="usage.html">
+                            <i class="fas fa-book"></i>
+                            <span>Usage Guide</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info hidden" id="userInfo">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <h3 id="userName">Guest</h3>
+                        <p id="userEmail">Not signed in</p>
+                    </div>
+                </div>
+                <button id="loginBtn" class="btn btn-primary">Sign In</button>
+                <button id="logoutBtn" class="btn btn-outline hidden">Sign Out</button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <div class="header-left">
+                    <h2>Usage Guide</h2>
+                </div>
+                <div class="header-right">
+                    <div id="projectInfo" class="project-info hidden">
+                        <span>Current Project:</span>
+                        <strong id="currentProjectName">No project selected</strong>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Welcome Section (hidden by default) -->
+            <div id="welcomeSection" class="welcome-section hidden">
+                <div class="welcome-content">
+                    <h1>Xpectra Analytics Usage Guide</h1>
+                    <p>Learn how to implement Xpectra tracking on your website or application.</p>
+                    <div class="welcome-actions">
+                        <button id="welcomeLoginBtn" class="btn btn-primary">
+                            Sign In
+                        </button>
+                        <button id="welcomeSignupBtn" class="btn btn-outline">
+                            Create Account
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Guide Content (visible by default) -->
+            <div id="guideContent" class="guide-content">
+                <div class="toc">
+                    <div class="toc-header">
+                        <h3>Table of Contents</h3>
+                    </div>
+                    <ul>
+                        <li><a href="#installation">Installation</a></li>
+                        <li><a href="#basic-usage">Basic Usage</a></li>
+                        <li><a href="#tracking-events">Tracking Events</a></li>
+                        <li><a href="#tracking-page-views">Tracking Page Views</a></li>
+                        <li><a href="#tracking-scroll-depth">Tracking Scroll Depth</a></li>
+                        <li><a href="#tracking-custom-events">Tracking Custom Events</a></li>
+                        <li><a href="#advanced-configuration">Advanced Configuration</a></li>
+                        <li><a href="#troubleshooting">Troubleshooting</a></li>
+                    </ul>
+                </div>
+                
+                <div class="guide-sections">
+                    <section id="installation" class="guide-section">
+                        <h2>Installation</h2>
+                        <p>There are multiple ways to install the Xpectra SDK in your project:</p>
+                        
+                        <h3>Option 1: Using CDN</h3>
+                        <p>Add the following script tag to your HTML file:</p>
+                        <pre><code class="language-html">&lt;script src="https://cdn.xpectra.com/analytics/latest/xpectra.min.js"&gt;&lt;/script&gt;</code></pre>
+                        
+                        <h3>Option 2: Using npm</h3>
+                        <p>Install the package using npm:</p>
+                        <pre><code class="language-bash">npm install xpectra-analytics</code></pre>
+                        <p>Then import it in your JavaScript file:</p>
+                        <pre><code class="language-javascript">import Xpectra from 'xpectra-analytics';</code></pre>
+                        
+                        <h3>Option 3: Manual Download</h3>
+                        <p>Download the latest version from the <a href="#" target="_blank">releases page</a> and include it in your project:</p>
+                        <pre><code class="language-html">&lt;script src="path/to/xpectra.min.js"&gt;&lt;/script&gt;</code></pre>
+                    </section>
+                    
+                    <section id="basic-usage" class="guide-section">
+                        <h2>Basic Usage</h2>
+                        <p>Initialize Xpectra with your API key. You can find your API key in the <a href="projects.html">Projects</a> section.</p>
+                        <pre><code class="language-javascript">// Initialize Xpectra with your API key
+Xpectra.init({
+  apiKey: 'YOUR_API_KEY_HERE'
+});
+
+// Start tracking automatically
+Xpectra.start();</code></pre>
+                        
+                        <div class="info-box">
+                            <i class="fas fa-info-circle"></i>
+                            <div>
+                                <h4>Where to Place the Code</h4>
+                                <p>Place the initialization code as early as possible in your page's loading process, ideally in the &lt;head&gt; section or at the beginning of your main JavaScript file.</p>
+                            </div>
+                        </div>
+                        
+                        <h3>Your API Key</h3>
+                        <div id="apiKeySection" class="api-key-section">
+                            <p>Sign in and create a project to get your API key. <a href="projects.html" class="btn btn-primary btn-sm">Go to Projects</a></p>
+                        </div>
+                    </section>
+                    
+                    <section id="tracking-events" class="guide-section">
+                        <h2>Tracking Events</h2>
+                        <p>Xpectra automatically tracks several events by default:</p>
+                        <ul class="feature-list">
+                            <li>
+                                <i class="fas fa-check"></i>
+                                <span>Page views and navigation</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check"></i>
+                                <span>Time spent on page</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check"></i>
+                                <span>Scroll depth</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check"></i>
+                                <span>User device and browser information</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check"></i>
+                                <span>Referrer and UTM parameters</span>
+                            </li>
+                        </ul>
+                    </section>
+                    
+                    <section id="tracking-page-views" class="guide-section">
+                        <h2>Tracking Page Views</h2>
+                        <p>Page views are tracked automatically when you call <code>Xpectra.start()</code>. For single-page applications (SPAs), you need to manually track page views when routes change:</p>
+                        
+                        <pre><code class="language-javascript">// For React Router
+useEffect(() => {
+  Xpectra.trackPageView();
+}, [location.pathname]);
+
+// For Vue Router
+router.afterEach((to) => {
+  Xpectra.trackPageView();
+});
+
+// For Angular Router
+router.events.subscribe((event) => {
+  if (event instanceof NavigationEnd) {
+    Xpectra.trackPageView();
+  }
+});</code></pre>
+                        
+                        <p>You can also pass custom data with page views:</p>
+                        <pre><code class="language-javascript">Xpectra.trackPageView({
+  title: 'Custom Page Title',
+  path: '/custom-path',
+  referrer: 'https://example.com'
+});</code></pre>
+                    </section>
+                    
+                    <section id="tracking-scroll-depth" class="guide-section">
+                        <h2>Tracking Scroll Depth</h2>
+                        <p>Scroll depth is tracked automatically. By default, events are triggered when the user scrolls to 25%, 50%, 75%, and 100% of the page.</p>
+                        <p>You can customize the scroll tracking thresholds:</p>
+                        <pre><code class="language-javascript">Xpectra.init({
+  apiKey: 'YOUR_API_KEY_HERE',
+  scrollTracking: {
+    enabled: true,
+    thresholds: [10, 30, 50, 70, 90]  // Track at 10%, 30%, 50%, 70%, and 90%
+  }
+});</code></pre>
+                    </section>
+                    
+                    <section id="tracking-custom-events" class="guide-section">
+                        <h2>Tracking Custom Events</h2>
+                        <p>You can track custom events using the <code>track</code> method:</p>
+                        <pre><code class="language-javascript">// Basic event tracking
+Xpectra.track('button_click');
+
+// With additional properties
+Xpectra.track('form_submit', {
+  formId: 'contact-form',
+  formFields: 3,
+  timeToComplete: 45
+});</code></pre>
+                        
+                        <div class="info-box">
+                            <i class="fas fa-lightbulb"></i>
+                            <div>
+                                <h4>Event Naming Best Practices</h4>
+                                <p>Use descriptive, consistent names for your events. We recommend using snake_case for event names (e.g., 'button_click', 'form_submit', 'video_play').</p>
+                            </div>
+                        </div>
+                        
+                        <h3>Common Custom Events to Track</h3>
+                        <table class="guide-table">
+                            <thead>
+                                <tr>
+                                    <th>Event Name</th>
+                                    <th>Description</th>
+                                    <th>Example Properties</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>button_click</td>
+                                    <td>User clicked a button</td>
+                                    <td>button_id, button_text, position</td>
+                                </tr>
+                                <tr>
+                                    <td>form_submit</td>
+                                    <td>User submitted a form</td>
+                                    <td>form_id, form_fields, success</td>
+                                </tr>
+                                <tr>
+                                    <td>product_view</td>
+                                    <td>User viewed a product</td>
+                                    <td>product_id, product_name, price</td>
+                                </tr>
+                                <tr>
+                                    <td>add_to_cart</td>
+                                    <td>User added item to cart</td>
+                                    <td>product_id, quantity, price</td>
+                                </tr>
+                                <tr>
+                                    <td>checkout</td>
+                                    <td>User initiated checkout</td>
+                                    <td>cart_value, items_count</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    
+                    <section id="advanced-configuration" class="guide-section">
+                        <h2>Advanced Configuration</h2>
+                        <p>Xpectra offers several configuration options during initialization:</p>
+                        
+                        <pre><code class="language-javascript">Xpectra.init({
+  apiKey: 'YOUR_API_KEY_HERE',
+  
+  // Disable automatic tracking features
+  autoTrack: {
+    pageViews: true,
+    scrollDepth: true,
+    outboundLinks: true,
+    timeOnPage: true
+  },
+  
+  // Custom domain for data collection
+  endpoint: 'https://analytics.your-domain.com',
+  
+  // Session configuration
+  session: {
+    timeout: 30 // Session timeout in minutes
+  },
+  
+  // Privacy settings
+  privacy: {
+    anonymizeIP: true,
+    respectDoNotTrack: true
+  },
+  
+  // Callback when tracking is ready
+  onReady: function() {
+    console.log('Xpectra is ready to track');
+  }
+});</code></pre>
+                    </section>
+                    
+                    <section id="troubleshooting" class="guide-section">
+                        <h2>Troubleshooting</h2>
+                        
+                        <h3>Debugging Mode</h3>
+                        <p>Enable debugging mode to see detailed logs in the browser console:</p>
+                        <pre><code class="language-javascript">Xpectra.init({
+  apiKey: 'YOUR_API_KEY_HERE',
+  debug: true
+});</code></pre>
+                        
+                        <h3>Common Issues</h3>
+                        <div class="accordion">
+                            <div class="accordion-item">
+                                <button class="accordion-header">
+                                    <span>No data appears in the dashboard</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="accordion-content">
+                                    <p>Check the following:</p>
+                                    <ul>
+                                        <li>Verify that you're using the correct API key</li>
+                                        <li>Check for JavaScript console errors</li>
+                                        <li>Ensure the tracking script is properly loaded</li>
+                                        <li>Data can take up to 10 minutes to appear in the dashboard</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <button class="accordion-header">
+                                    <span>Events not being tracked in single-page applications</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="accordion-content">
+                                    <p>For single-page applications, you need to manually track page view events when routes change. See the "Tracking Page Views" section for implementation details for your framework.</p>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <button class="accordion-header">
+                                    <span>Adblockers blocking the script</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="accordion-content">
+                                    <p>Some adblockers might block analytics scripts. Consider hosting the script on your own domain to reduce the chance of it being blocked.</p>
+                                    <pre><code class="language-javascript">Xpectra.init({
+  apiKey: 'YOUR_API_KEY_HERE',
+  endpoint: 'https://your-own-domain.com/xpectra-collect'
+});</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h3>Getting Help</h3>
+                        <p>If you're still experiencing issues, reach out to our support team:</p>
+                        <ul class="contact-methods">
+                            <li>
+                                <i class="fas fa-envelope"></i>
+                                <a href="mailto:support@xpectra.com">support@xpectra.com</a>
+                            </li>
+                            <li>
+                                <i class="fab fa-github"></i>
+                                <a href="https://github.com/xpectra/xpectra-sdk/issues" target="_blank">GitHub Issues</a>
+                            </li>
+                            <li>
+                                <i class="fas fa-comment-dots"></i>
+                                <a href="#" target="_blank">Community Forum</a>
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modals -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Sign In</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Sign In</button>
+                    </div>
+                    <div class="form-footer">
+                        <p>Don't have an account? <a href="#" id="showSignupModal">Sign Up</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Sign Up</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="signupName">Full Name</label>
+                        <input type="text" id="signupName" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email</label>
+                        <input type="email" id="signupEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" placeholder="Create a password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupConfirmPassword">Confirm Password</label>
+                        <input type="password" id="signupConfirmPassword" placeholder="Confirm your password" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Create Account</button>
+                    </div>
+                    <div class="form-footer">
+                        <p>Already have an account? <a href="#" id="showLoginModal">Sign In</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+    
+    <!-- Scripts -->
+    <!-- Firebase App (required) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <!-- Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <!-- Firebase Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    <!-- Prism.js for code highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/usage.js"></script>
+    <!-- Auth Test Script -->
+    <script src="../js/test-auth.js"></script>
+</body>
+</html>

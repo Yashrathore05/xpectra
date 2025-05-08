@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xpectra Analytics Dashboard</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    
+    <!-- Auth Persistence - must be first -->
+    <script src="js/auth-persistence.js"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="loading">
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="assets/logo.png" alt="Xpectra Logo">
+                    <h1>Xpectra</h1>
+                </div>
+                <button class="toggle-sidebar" id="toggleSidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active">
+                        <a href="index.html">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pages/projects.html">
+                            <i class="fas fa-project-diagram"></i>
+                            <span>Projects</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pages/settings.html">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pages/usage.html">
+                            <i class="fas fa-book"></i>
+                            <span>Usage Guide</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info hidden" id="userInfo">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <h3 id="userName">Guest</h3>
+                        <p id="userEmail">Not signed in</p>
+                    </div>
+                </div>
+                <button id="loginBtn" class="btn btn-primary">Sign In</button>
+                <button id="logoutBtn" class="btn btn-outline hidden">Sign Out</button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <div class="header-left">
+                    <h2>Dashboard</h2>
+                </div>
+                <div class="header-right">
+                    <div class="date-range">
+                        <button id="dateRangeBtn" class="btn btn-outline dropdown-trigger">
+                            <i class="fas fa-calendar"></i>
+                            <span>Last 7 days</span>
+                        </button>
+                        <div id="dateRangeDropdown" class="dropdown-menu hidden">
+                            <ul>
+                                <li data-range="today">Today</li>
+                                <li data-range="yesterday">Yesterday</li>
+                                <li data-range="7days" class="active">Last 7 days</li>
+                                <li data-range="30days">Last 30 days</li>
+                                <li data-range="90days">Last 90 days</li>
+                                <li data-range="custom">Custom Range</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="customDateRange" class="custom-date-range hidden">
+                        <input type="date" id="startDate">
+                        <span>to</span>
+                        <input type="date" id="endDate">
+                        <button id="applyDateRange" class="btn btn-primary">Apply</button>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Project Selection (visible only when logged in) -->
+            <div id="projectSelection" class="project-selection hidden">
+                <div class="project-dropdown">
+                    <button id="projectDropdownBtn" class="btn btn-outline dropdown-trigger">
+                        <span id="currentProject">Select a project</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div id="projectDropdownMenu" class="dropdown-menu hidden">
+                        <ul id="projectList">
+                            <!-- Projects will be populated here -->
+                        </ul>
+                    </div>
+                </div>
+                <div id="apiKeySection" class="api-key-section hidden">
+                    <div class="api-key-display">
+                        <span>API Key:</span>
+                        <code id="apiKeyDisplay">••••••••••••••••</code>
+                        <button id="copyApiKey" class="btn btn-icon" data-tooltip="Copy API Key">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button id="regenerateApiKey" class="btn btn-icon" data-tooltip="Regenerate API Key">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Welcome Section (visible when not logged in) -->
+            <div id="welcomeSection" class="welcome-section">
+                <div class="welcome-content">
+                    <h1>Welcome to Xpectra Analytics</h1>
+                    <p>Comprehensive web analytics platform for your websites and applications.</p>
+                    <div class="welcome-actions">
+                        <button id="welcomeLoginBtn" class="btn btn-primary">
+                            Sign In
+                        </button>
+                        <button id="welcomeSignupBtn" class="btn btn-outline">
+                            Create Account
+                        </button>
+                    </div>
+                </div>
+                <div class="welcome-features">
+                    <div class="feature-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Real-Time Analytics</h3>
+                        <p>Track user activity on your website as it happens.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h3>Device Insights</h3>
+                        <p>Learn what devices your visitors are using.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-clock"></i>
+                        <h3>Peak Hours</h3>
+                        <p>Identify your website's busiest hours.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dashboard Content (visible when logged in and project selected) -->
+            <div id="dashboardContent" class="dashboard-content hidden">
+                <!-- Overview Cards -->
+                <div class="overview-cards">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Page Views</h3>
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="stat-primary" id="pageViewsCount">0</div>
+                            <div class="stat-change" id="pageViewsChange">
+                                <i class="fas fa-caret-up"></i> 0%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Unique Visitors</h3>
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="stat-primary" id="uniqueVisitorsCount">0</div>
+                            <div class="stat-change" id="uniqueVisitorsChange">
+                                <i class="fas fa-caret-up"></i> 0%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Online Users</h3>
+                            <i class="fas fa-user-clock"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="stat-primary" id="onlineUsersCount">0</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Avg. Time on Page</h3>
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="stat-primary" id="avgTimeOnPage">0s</div>
+                            <div class="stat-change" id="avgTimeChange">
+                                <i class="fas fa-caret-up"></i> 0%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts Row -->
+                <div class="charts-row">
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>Visitors Over Time</h3>
+                            <div class="card-actions">
+                                <button class="btn btn-icon" id="refreshVisitorsChart" data-tooltip="Refresh data">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                                <button class="btn btn-icon" id="downloadVisitorsChart" data-tooltip="Download chart">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="visitorsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Secondary Stats Row -->
+                <div class="stats-row">
+                    <!-- Devices Chart -->
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>Devices</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container chart-square">
+                                <canvas id="devicesChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Peak Hours Chart -->
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>Peak Hours</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="peakHoursChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Scroll Depth Chart -->
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>Scroll Depth</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="scrollDepthChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tables Row -->
+                <div class="tables-row">
+                    <!-- Top Pages Table -->
+                    <div class="card table-card">
+                        <div class="card-header">
+                            <h3>Top Pages</h3>
+                            <div class="card-actions">
+                                <button class="btn btn-text" id="viewAllPages">
+                                    View All
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table id="topPagesTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Page</th>
+                                            <th>Views</th>
+                                            <th>Avg. Time</th>
+                                            <th>Bounce Rate</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Table rows will be populated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Keywords Table -->
+                    <div class="card table-card">
+                        <div class="card-header">
+                            <h3>Keywords</h3>
+                            <div class="card-actions">
+                                <button class="btn btn-text" id="viewAllKeywords">
+                                    View All
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table id="keywordsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Keyword</th>
+                                            <th>Position</th>
+                                            <th>Change</th>
+                                            <th>Searches</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Table rows will be populated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+    </div>
+    
+    <!-- Modals Container -->
+    <div id="modalsContainer">
+        <!-- Add Project Modal -->
+        <div id="addProjectModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Add New Project</h2>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="addProjectForm">
+                        <div class="form-group">
+                            <label for="projectName">Project Name</label>
+                            <input type="text" id="projectName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="projectDomain">Website Domain</label>
+                            <input type="text" id="projectDomain" placeholder="example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="projectDescription">Description (Optional)</label>
+                            <textarea id="projectDescription" rows="3"></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Create Project</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+    
+    <!-- Loading Indicator -->
+    <div class="loading-indicator">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+    
+    <!-- JavaScript -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/mock-data.js"></script>
+    <script src="js/dashboard.js"></script>
+    
+    <!-- Mobile navigation initialization -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize mobile navigation if on mobile device
+            if (window.innerWidth < 768) {
+                document.body.classList.add('mobile-view');
+                
+                // Check if the toggle button function exists and call it
+                if (typeof createMobileNavToggle === 'function') {
+                    createMobileNavToggle();
+                }
+            }
+        });
+    </script>
+    
+    <!-- Loading safety timeout -->
+    <script>
+        // Ensure loading indicator is removed after 8 seconds max
+        // This prevents the spinner from running forever if there's an error
+        setTimeout(function() {
+            if (document.body.classList.contains('loading')) {
+                console.warn("Removing loading state due to timeout");
+                document.body.classList.remove('loading');
+            }
+        }, 8000);
+    </script>
+</body>
+</html> 

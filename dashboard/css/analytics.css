@@ -1,0 +1,320 @@
+/* 
+ * Xpectra Analytics Dashboard
+ * Analytics Page CSS
+ */
+
+.analytics-content {
+  padding: var(--spacing-lg) var(--spacing-xl);
+}
+
+/* Summary Cards */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.summary-card {
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.summary-card-header {
+  padding: var(--spacing-md) var(--spacing-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.summary-card-header h3 {
+  font-size: var(--font-size-md);
+  margin: 0;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.summary-card-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: rgba(67, 97, 238, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+}
+
+.summary-card-body {
+  padding: var(--spacing-lg);
+  text-align: center;
+}
+
+.summary-value {
+  font-size: var(--font-size-xxl);
+  font-weight: 700;
+  margin-bottom: var(--spacing-xs);
+  color: var(--text-dark);
+}
+
+.summary-change {
+  font-size: var(--font-size-sm);
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: var(--border-radius-sm);
+}
+
+.summary-change i {
+  margin-right: var(--spacing-xs);
+}
+
+.summary-change.increase {
+  color: var(--success-color);
+  background-color: rgba(38, 169, 97, 0.1);
+}
+
+.summary-change.decrease {
+  color: var(--danger-color);
+  background-color: rgba(235, 87, 87, 0.1);
+}
+
+/* Charts Section */
+.charts-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.analytics-card {
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.analytics-card.large {
+  grid-column: span 2;
+}
+
+.analytics-card.medium {
+  grid-column: span 1;
+}
+
+.analytics-card-header {
+  padding: var(--spacing-md) var(--spacing-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.analytics-card-header h3 {
+  font-size: var(--font-size-md);
+  margin: 0;
+  font-weight: 600;
+}
+
+.analytics-card-body {
+  padding: var(--spacing-lg);
+  position: relative;
+  min-height: 300px;
+}
+
+.toggle-buttons {
+  display: flex;
+  background-color: var(--bg-light);
+  border-radius: var(--border-radius-sm);
+  padding: 2px;
+  border: 1px solid var(--border-color);
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  padding: var(--spacing-xs) var(--spacing-md);
+  cursor: pointer;
+  font-size: var(--font-size-xs);
+  border-radius: var(--border-radius-xs);
+  transition: all var(--transition-fast);
+}
+
+.toggle-btn.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Tables Section */
+.tables-section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-lg);
+}
+
+.analytics-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.analytics-table th,
+.analytics-table td {
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.analytics-table th {
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.analytics-table tbody tr {
+  transition: background-color var(--transition-fast);
+}
+
+.analytics-table tbody tr:hover {
+  background-color: var(--bg-light);
+}
+
+.loading-cell {
+  text-align: center;
+  padding: var(--spacing-xl) !important;
+  color: var(--text-muted);
+}
+
+.loading-cell i {
+  margin-right: var(--spacing-xs);
+  color: var(--primary-color);
+}
+
+/* Date Picker */
+.date-picker {
+  position: relative;
+}
+
+.date-range-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+}
+
+.date-range-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-md);
+  min-width: 180px;
+  z-index: 10;
+}
+
+.date-range-dropdown ul {
+  list-style: none;
+  padding: var(--spacing-xs) 0;
+  margin: 0;
+}
+
+.date-range-dropdown li {
+  padding: var(--spacing-sm) var(--spacing-md);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.date-range-dropdown li:hover {
+  background-color: var(--bg-light);
+}
+
+.date-range-dropdown li.active {
+  background-color: rgba(67, 97, 238, 0.1);
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+/* Project Info */
+.project-info {
+  background-color: var(--bg-light);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  margin-right: var(--spacing-md);
+}
+
+/* No Project Selected */
+.no-project-selected {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 400px;
+}
+
+.empty-state i {
+  font-size: 3rem;
+  color: var(--text-muted);
+  margin-bottom: var(--spacing-md);
+}
+
+.empty-state h3 {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--spacing-sm);
+}
+
+.empty-state p {
+  margin-bottom: var(--spacing-lg);
+  color: var(--text-muted);
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  .summary-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .charts-section {
+    grid-template-columns: 1fr;
+  }
+  
+  .analytics-card.large,
+  .analytics-card.medium {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .summary-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .analytics-card-body {
+    min-height: 250px;
+  }
+  
+  .header-right {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--spacing-xs);
+  }
+  
+  .project-info {
+    margin-right: 0;
+    margin-bottom: var(--spacing-xs);
+  }
+} 

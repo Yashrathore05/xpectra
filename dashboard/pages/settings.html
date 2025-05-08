@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Xpectra Analytics Dashboard</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../assets/favicon.ico" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/settings.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="../assets/logo.png" alt="Xpectra Logo">
+                    <h1>Xpectra</h1>
+                </div>
+                <button class="toggle-sidebar" id="toggleSidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="../index.html">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="projects.html">
+                            <i class="fas fa-project-diagram"></i>
+                            <span>Projects</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="settings.html">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="usage.html">
+                            <i class="fas fa-book"></i>
+                            <span>Usage Guide</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info hidden" id="userInfo">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <h3 id="userName">Guest</h3>
+                        <p id="userEmail">Not signed in</p>
+                    </div>
+                </div>
+                <button id="loginBtn" class="btn btn-primary">Sign In</button>
+                <button id="logoutBtn" class="btn btn-outline hidden">Sign Out</button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <div class="header-left">
+                    <h2>Settings</h2>
+                </div>
+                <div class="header-right">
+                    <div id="projectInfo" class="project-info hidden">
+                        <span>Current Project:</span>
+                        <strong id="currentProjectName">No project selected</strong>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Welcome Section (visible when not logged in) -->
+            <div id="welcomeSection" class="welcome-section">
+                <div class="welcome-content">
+                    <h1>Account Settings</h1>
+                    <p>Manage your profile, preferences, and notification settings.</p>
+                    <div class="welcome-actions">
+                        <button id="welcomeLoginBtn" class="btn btn-primary">
+                            Sign In
+                        </button>
+                        <button id="welcomeSignupBtn" class="btn btn-outline">
+                            Create Account
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings Content (visible when logged in) -->
+            <div id="settingsContent" class="settings-content hidden">
+                <!-- Settings Tabs -->
+                <div class="settings-tabs">
+                    <button class="settings-tab active" data-tab="profile">
+                        <i class="fas fa-user"></i> Profile
+                    </button>
+                    <button class="settings-tab" data-tab="account">
+                        <i class="fas fa-shield-alt"></i> Account
+                    </button>
+                    <button class="settings-tab" data-tab="notifications">
+                        <i class="fas fa-bell"></i> Notifications
+                    </button>
+                    <button class="settings-tab" data-tab="preferences">
+                        <i class="fas fa-sliders-h"></i> Preferences
+                    </button>
+                    <button class="settings-tab" data-tab="api">
+                        <i class="fas fa-code"></i> API Access
+                    </button>
+                </div>
+                
+                <!-- Settings Sections -->
+                <div class="settings-sections">
+                    <!-- Profile Settings -->
+                    <div class="settings-section active" id="profileSettings">
+                        <div class="settings-card">
+                            <div class="settings-card-header">
+                                <h3>Profile Information</h3>
+                            </div>
+                            <div class="settings-card-body">
+                                <form id="profileForm">
+                                    <div class="profile-picture">
+                                        <div class="avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="avatar-actions">
+                                            <button type="button" class="btn btn-outline" id="uploadAvatarBtn">
+                                                Upload Picture
+                                            </button>
+                                            <button type="button" class="btn btn-text" id="removeAvatarBtn">
+                                                Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="profileName">Full Name</label>
+                                            <input type="text" id="profileName" value="John Doe">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="profileEmail">Email Address</label>
+                                            <input type="email" id="profileEmail" value="john.doe@example.com" disabled>
+                                            <small>Email cannot be changed.</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="profilePhone">Phone Number</label>
+                                            <input type="tel" id="profilePhone" placeholder="Enter your phone number">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="profileCompany">Company</label>
+                                            <input type="text" id="profileCompany" placeholder="Enter your company">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="profileBio">Bio</label>
+                                        <textarea id="profileBio" rows="3" placeholder="Tell us about yourself"></textarea>
+                                    </div>
+                                    
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Account Settings -->
+                    <div class="settings-section" id="accountSettings">
+                        <div class="settings-card">
+                            <div class="settings-card-header">
+                                <h3>Change Password</h3>
+                            </div>
+                            <div class="settings-card-body">
+                                <form id="passwordForm">
+                                    <div class="form-group">
+                                        <label for="currentPassword">Current Password</label>
+                                        <input type="password" id="currentPassword" placeholder="Enter your current password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="newPassword">New Password</label>
+                                        <input type="password" id="newPassword" placeholder="Enter your new password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="confirmPassword">Confirm New Password</label>
+                                        <input type="password" id="confirmPassword" placeholder="Confirm your new password">
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-primary">Update Password</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-card">
+                            <div class="settings-card-header">
+                                <h3>Two-Factor Authentication</h3>
+                            </div>
+                            <div class="settings-card-body">
+                                <div class="switch-container">
+                                    <label class="switch-label">Enable Two-Factor Authentication</label>
+                                    <div class="switch">
+                                        <input type="checkbox" id="twoFactorSwitch">
+                                        <span class="slider"></span>
+                                    </div>
+                                </div>
+                                <p class="settings-description">
+                                    Add an extra layer of security to your account by requiring a verification code in addition to your password.
+                                </p>
+                                <button class="btn btn-outline" id="configureTwoFactorBtn" disabled>
+                                    Configure Two-Factor Auth
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-card danger-zone">
+                            <div class="settings-card-header">
+                                <h3>Danger Zone</h3>
+                            </div>
+                            <div class="settings-card-body">
+                                <div class="danger-action">
+                                    <div>
+                                        <h4>Delete Account</h4>
+                                        <p>Permanently delete your account and all associated data.</p>
+                                    </div>
+                                    <button class="btn btn-danger" id="deleteAccountBtn">
+                                        Delete Account
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Notifications Settings -->
+                    <div class="settings-section" id="notificationsSettings">
+                        <div class="settings-card">
+                            <div class="settings-card-header">
+                                <h3>Email Notifications</h3>
+                            </div>
+                            <div class="settings-card-body">
+                                <div class="notification-option">
+                                    <div>
+                                        <h4>Weekly Reports</h4>
+                                        <p>Receive a summary of your analytics data every week.</p>
+                                    </div>
+                                    <div class="switch">
+                                        <input type="checkbox" id="weeklyReportSwitch" checked>
+                                        <span class="slider"></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="notification-option">
+                                    <div>
+                                        <h4>Traffic Alerts</h4>
+                                        <p>Get notified when there are significant changes in your website traffic.</p>
+                                    </div>
+                                    <div class="switch">
+                                        <input type="checkbox" id="trafficAlertSwitch">
+                                        <span class="slider"></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="notification-option">
+                                    <div>
+                                        <h4>Security Alerts</h4>
+                                        <p>Receive notifications about security related events.</p>
+                                    </div>
+                                    <div class="switch">
+                                        <input type="checkbox" id="securityAlertSwitch" checked>
+                                        <span class="slider"></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="notification-option">
+                                    <div>
+                                        <h4>Product Updates</h4>
+                                        <p>Stay informed about new features and updates.</p>
+                                    </div>
+                                    <div class="switch">
+                                        <input type="checkbox" id="productUpdateSwitch" checked>
+                                        <span class="slider"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Preferences Settings -->
+                    <div class="settings-section" id="preferencesSettings">
+                        <div class="settings-card">
+                            <div class="settings-card-header">
+                                <h3>Display Settings</h3>
+                            </div>
+                            <div class="settings-card-body">
+                                <div class="preference-option">
+                                    <label for="themeSelect">Theme</label>
+                                    <select id="themeSelect" class="form-select">
+                                        <option value="light">Light</option>
+                                        <option value="dark">Dark</option>
+                                        <option value="system">System Default</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="preference-option">
+                                    <label for="timeFormatSelect">Time Format</label>
+                                    <select id="timeFormatSelect" class="form-select">
+                                        <option value="12h">12-hour (AM/PM)</option>
+                                        <option value="24h">24-hour</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="preference-option">
+                                    <label for="dateFormatSelect">Date Format</label>
+                                    <select id="dateFormatSelect" class="form-select">
+                                        <option value="mm/dd/yyyy">MM/DD/YYYY</option>
+                                        <option value="dd/mm/yyyy">DD/MM/YYYY</option>
+                                        <option value="yyyy-mm-dd">YYYY-MM-DD</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="preference-option">
+                                    <label for="defaultPageSelect">Default Dashboard Page</label>
+                                    <select id="defaultPageSelect" class="form-select">
+                                        <option value="overview">Overview</option>
+                                        <option value="analytics">Analytics</option>
+                                        <option value="projects">Projects</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-card">
+                            <div class="settings-card-header">
+                                <h3>Analytics Settings</h3>
+                            </div>
+                            <div class="settings-card-body">
+                                <div class="preference-option">
+                                    <label for="dataRetentionSelect">Data Retention Period</label>
+                                    <select id="dataRetentionSelect" class="form-select">
+                                        <option value="3months">3 months</option>
+                                        <option value="6months">6 months</option>
+                                        <option value="1year" selected>1 year</option>
+                                        <option value="2years">2 years</option>
+                                        <option value="forever">Forever</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="switch-container">
+                                    <label class="switch-label">IP Anonymization</label>
+                                    <div class="switch">
+                                        <input type="checkbox" id="ipAnonymizeSwitch" checked>
+                                        <span class="slider"></span>
+                                    </div>
+                                </div>
+                                <p class="settings-description">
+                                    Anonymize IP addresses before storing them in the analytics database.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- API Access Settings -->
+                    <div class="settings-section" id="apiSettings">
+                        <div class="settings-card">
+                            <div class="settings-card-header">
+                                <h3>API Keys</h3>
+                            </div>
+                            <div class="settings-card-body">
+                                <p class="settings-description">
+                                    Manage API keys for programmatic access to your Xpectra Analytics data.
+                                    API keys are project-specific and can be created in the <a href="projects.html">Projects</a> section.
+                                </p>
+                                
+                                <div class="api-keys-list" id="apiKeysList">
+                                    <div class="api-key-item">
+                                        <div class="api-key-info">
+                                            <h4>No projects found</h4>
+                                            <p>Create a project to generate an API key.</p>
+                                        </div>
+                                        <div class="api-key-actions">
+                                            <a href="projects.html" class="btn btn-primary">
+                                                <i class="fas fa-project-diagram"></i> Go to Projects
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-card">
+                            <div class="settings-card-header">
+                                <h3>Webhooks</h3>
+                            </div>
+                            <div class="settings-card-body">
+                                <p class="settings-description">
+                                    Configure webhook endpoints to receive real-time notifications.
+                                </p>
+                                
+                                <button class="btn btn-primary" id="addWebhookBtn">
+                                    <i class="fas fa-plus"></i> Add Webhook
+                                </button>
+                                
+                                <div class="webhooks-list" id="webhooksList">
+                                    <div class="empty-webhooks">
+                                        <p>No webhooks configured yet.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modals -->
+    <div class="modal" id="deleteAccountModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Delete Account</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="warning-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>This action <strong>cannot</strong> be undone. This will permanently delete your account and all associated data.</p>
+                </div>
+                <form id="deleteAccountForm">
+                    <div class="form-group">
+                        <label for="deleteConfirmEmail">Enter your email to confirm</label>
+                        <input type="email" id="deleteConfirmEmail" placeholder="Your email address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="deleteConfirmPassword">Enter your password</label>
+                        <input type="password" id="deleteConfirmPassword" placeholder="Your password" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" id="cancelDeleteAccountBtn">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Permanently Delete Account</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="addWebhookModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Webhook</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="webhookForm">
+                    <div class="form-group">
+                        <label for="webhookName">Name</label>
+                        <input type="text" id="webhookName" placeholder="Webhook name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="webhookUrl">Payload URL</label>
+                        <input type="url" id="webhookUrl" placeholder="https://example.com/webhook" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Events</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="webhookEvents" value="page_view">
+                                Page Views
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="webhookEvents" value="custom_event">
+                                Custom Events
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="webhookEvents" value="project_update">
+                                Project Updates
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="webhookSecret">Secret (optional)</label>
+                        <input type="text" id="webhookSecret" placeholder="Webhook secret for signature verification">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Add Webhook</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Sign In</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Sign In</button>
+                    </div>
+                    <div class="form-footer">
+                        <p>Don't have an account? <a href="#" id="showSignupModal">Sign Up</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Sign Up</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="signupName">Full Name</label>
+                        <input type="text" id="signupName" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email</label>
+                        <input type="email" id="signupEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" placeholder="Create a password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupConfirmPassword">Confirm Password</label>
+                        <input type="password" id="signupConfirmPassword" placeholder="Confirm your password" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Create Account</button>
+                    </div>
+                    <div class="form-footer">
+                        <p>Already have an account? <a href="#" id="showLoginModal">Sign In</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+    
+    <!-- Scripts -->
+    <!-- Firebase App (required) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <!-- Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <!-- Firebase Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/settings.js"></script>
+    <!-- Auth Test Script -->
+    <script src="../js/test-auth.js"></script>
+</body>
+</html> 

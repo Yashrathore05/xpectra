@@ -1,0 +1,27 @@
+{
+  "name": "xpectra-sdk",
+  "version": "1.0.0",
+  "description": "Web analytics tracking SDK for Xpectra Analytics Platform",
+  "main": "dist/xpectra.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack --mode development --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "analytics",
+    "tracking",
+    "web-analytics",
+    "statistics"
+  ],
+  "author": "Xpectra Analytics",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.27.1",
+    "@babel/preset-env": "^7.27.2",
+    "babel-loader": "^10.0.0",
+    "terser-webpack-plugin": "^5.3.14",
+    "webpack": "^5.99.8",
+    "webpack-cli": "^6.0.1"
+  }
+}

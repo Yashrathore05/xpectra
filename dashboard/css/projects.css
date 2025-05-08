@@ -1,0 +1,248 @@
+/* 
+ * Xpectra Analytics Dashboard
+ * Projects Page CSS
+ */
+
+.projects-content {
+  padding: var(--spacing-lg) var(--spacing-xl);
+}
+
+.projects-container {
+  padding: var(--spacing-lg);
+}
+
+/* Projects List */
+.projects-list {
+  margin-bottom: var(--spacing-xl);
+}
+
+.project-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-lg);
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow-sm);
+  margin-bottom: var(--spacing-md);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.project-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--box-shadow);
+}
+
+.project-info {
+  flex: 1;
+}
+
+.project-info h3 {
+  margin-bottom: var(--spacing-xs);
+  font-weight: 600;
+}
+
+.project-info p {
+  margin-bottom: var(--spacing-xs);
+  color: var(--text-secondary);
+}
+
+.project-info a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.project-info a:hover {
+  text-decoration: underline;
+}
+
+.project-api-key {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+}
+
+.project-api-key code {
+  font-family: 'Courier New', monospace;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  word-break: break-all;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.project-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+/* Empty State */
+.projects-empty {
+  padding: var(--spacing-xl) 0;
+  text-align: center;
+}
+
+.empty-state {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: var(--spacing-xl);
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow-sm);
+}
+
+.empty-state i {
+  font-size: 3rem;
+  color: var(--text-muted);
+  margin-bottom: var(--spacing-lg);
+}
+
+.empty-state h3 {
+  margin-bottom: var(--spacing-sm);
+}
+
+.empty-state p {
+  margin-bottom: var(--spacing-lg);
+  color: var(--text-secondary);
+}
+
+/* Loading Projects */
+.loading-projects {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  text-align: center;
+}
+
+.loading-projects i {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-md);
+}
+
+/* Error Message */
+.error-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  text-align: center;
+  background-color: #FFF5F5;
+  border-radius: var(--border-radius);
+  border: 1px solid #FED7D7;
+}
+
+.error-message i {
+  font-size: 2rem;
+  color: var(--danger-color);
+  margin-bottom: var(--spacing-md);
+}
+
+.error-message p {
+  margin-bottom: var(--spacing-md);
+  color: var(--text-secondary);
+  max-width: 500px;
+}
+
+.error-message .btn {
+  margin-top: var(--spacing-sm);
+}
+
+/* Media Queries */
+@media (max-width: 992px) {
+  .projects-content {
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+  
+  .projects-container {
+    padding: var(--spacing-md);
+  }
+}
+
+@media (max-width: 768px) {
+  .projects-content {
+    padding: var(--spacing-md);
+  }
+  
+  .projects-container {
+    padding: var(--spacing-sm);
+  }
+  
+  .project-item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--spacing-md);
+  }
+  
+  .project-api-key {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+  
+  .project-api-key code {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: var(--spacing-sm);
+  }
+  
+  .project-actions {
+    margin-top: var(--spacing-md);
+    align-self: flex-end;
+  }
+  
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    height: auto;
+    padding: var(--spacing-md);
+  }
+  
+  .header-right {
+    width: 100%;
+  }
+  
+  .header-right .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .project-actions {
+    flex-direction: column;
+    align-self: stretch;
+    width: 100%;
+  }
+  
+  .project-actions .btn {
+    width: 100%;
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .project-item {
+    padding: var(--spacing-md);
+  }
+  
+  .project-info h3 {
+    font-size: var(--font-size-md);
+  }
+  
+  .project-info p {
+    font-size: var(--font-size-sm);
+  }
+  
+  .modal-content {
+    width: 95%;
+    max-width: none;
+    margin: 0 auto;
+  }
+} 

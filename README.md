@@ -1,157 +1,180 @@
-# 🛰️ Xpectra — Universal Visitor Tracking Tool
+# Xpectra Analytics Platform
 
-A privacy-friendly visitor tracking solution for websites with Firebase integration and a React dashboard.
+<div align="center">
+  <img src="https://drive.google.com/file/d/1iidmIUm9MugZfCS2YUK6-wlwF5AN4Kjg/view?usp=sharing" alt="Xpectra Logo" width="150">
+  <h3>Comprehensive Web Analytics for Modern Applications</h3>
+  <p>Track, analyze, and optimize your web presence with powerful insights</p>
+  
+  [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+  [![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow.svg)](https://www.ecmascript6.com/)
+  [![Firebase](https://img.shields.io/badge/Firebase-8.10.1-orange.svg)](https://firebase.google.com/)
+  [![Chart.js](https://img.shields.io/badge/Chart.js-Latest-green.svg)](https://www.chartjs.org/)
+</div>
 
-## Overview
+## 📊 Overview
 
-Xpectra is a comprehensive analytics platform that allows website owners to:
-- Track visitor engagement, pageviews, and user interactions
-- Analyze traffic sources and user behavior
-- Visualize data through an intuitive dashboard
-- Implement custom event tracking
+Xpectra Analytics is a comprehensive web analytics platform that helps you understand user behavior on your websites and applications. The platform consists of two main components:
 
-## Architecture
+- **Analytics Dashboard**: A beautiful, intuitive interface to visualize and analyze your data
+- **JavaScript SDK**: A lightweight client-side library to track user interactions
 
-Xpectra consists of three main components:
+## ✨ Features
 
-1. **Client Tracker**: JavaScript library that collects visitor data
-2. **Firebase Backend**: Handles data storage and analytics processing
-3. **React Dashboard**: Visualizes analytics data for site owners
+- **Real-time Analytics**: Monitor user activity as it happens
+- **User Identification**: Track individual user journeys across sessions
+- **Device & Browser Detection**: Understand your audience's technology stack
+- **Engagement Metrics**: Measure time on page, scroll depth, and click patterns
+- **Custom Events**: Track specific interactions important to your business
+- **Offline Support**: Queue events when users are offline for later transmission
+- **Multiple Projects**: Manage analytics for multiple websites/applications
+- **Responsive Dashboard**: Access insights from any device
 
-## Getting Started
+## 🚀 Quick Start
 
-### For Website Owners
+### Dashboard Setup
 
-#### 1. Create an Account
-1. Visit the Xpectra dashboard at `https://xpectra-dashboard.vercel.app`
-2. Click "Register" and create an account with your email and password
-3. Verify your email address if required
+1. Clone this repository
+   ```bash
+   git clone https://github.com/Yashrathore05/xpectra
+   cd xpectra
+   ```
 
-#### 2. Add Your Website
-1. Log in to your Xpectra dashboard
-2. Click "Add Site" button in the dashboard
-3. Enter your website details:
-   - Site name
-   - Domain
-   - Allowed origins (optional for cross-domain tracking)
-4. Save to generate your unique API key
+2. Install dependencies
+   ```bash
+   npm install
+   ```
 
-#### 3. Install the Tracking Script
-Add this script to your website's HTML, preferably before the closing `</body>` tag:
+3. Configure Firebase
+   - Create a Firebase project at [firebase.google.com](https://firebase.google.com)
+   - Enable Authentication, Firestore, and Analytics
+   - Add your Firebase configuration to the dashboard
 
-```html
-<script src="https://xpectra-api.vercel.app/tracker.js" data-api-key="YOUR_API_KEY"></script>
+4. Launch the dashboard
+   ```bash
+   cd dashboard
+   # Serve using your preferred method, e.g., with a simple HTTP server
+   python -m http.server 8000
+   ```
+
+5. Access the dashboard at `http://localhost:3000`
+
+### Integrating the SDK
+
+#### Using NPM
+
+```bash
+npm install xpectra-sdk
 ```
 
-Replace `YOUR_API_KEY` with the API key generated for your site.
-
-#### 4. Start Tracking (No Further Configuration Needed)
-The script automatically tracks:
-- Pageviews
-- Visitor information (device, browser, screen size)
-- Referrers
-- Session duration
-- Basic user interactions
-
-#### 5. Track Custom Events (Optional)
-For more detailed analytics, you can track custom events:
-
 ```javascript
-// Basic event tracking
-window.xpectra.trackEvent('signup', { plan: 'premium' });
+import XpectraAnalytics from 'xpectra-sdk';
 
-// E-commerce tracking example
-window.xpectra.trackEvent('purchase', {
-  productId: '12345',
-  price: 49.99,
-  currency: 'USD',
-  category: 'Electronics'
+const analytics = new XpectraAnalytics({
+    apiKey: 'YOUR_API_KEY',
+    debug: false
 });
 ```
 
-### Viewing Your Analytics
-
-1. Log in to your Xpectra dashboard
-2. Select your website from the site selector dropdown
-3. View analytics data in the main dashboard:
-   - Visitor Overview: total, new, and returning visitors
-   - Pageview Statistics: views, average time on page, bounce rate
-   - Visitor Timeline: traffic patterns over time
-   - Top Pages: most visited content
-   - Referrers: traffic sources
-   - Device Distribution: browser and device types
-   - Geographic Data: visitor locations
-
-4. Use the time period selector to filter data by:
-   - Today
-   - Yesterday  
-   - Last 7 days
-   - Last 30 days
-   - This month
-   - Last month
-   - Custom date range
-
-## Advanced Usage
-
-### Data Attributes for Enhanced Tracking
-Add `data-track` attributes to important elements for better tracking labels:
+#### Using CDN
 
 ```html
-<button data-track="signup-button" data-track-action="click">
-  Sign Up
-</button>
+<script src="https://cdn.xpectra.com/sdk/latest/xpectra.min.js"></script>
+
+<script>
+    const analytics = new XpectraAnalytics({
+        apiKey: 'YOUR_API_KEY',
+        debug: false
+    });
+</script>
 ```
 
-### Site Management
-- **Multiple Sites**: Track multiple websites from a single dashboard
-- **API Key Management**: Regenerate API keys if needed for security
-- **Access Control**: Invite team members with different permission levels (coming soon)
+## 📖 Documentation
 
-### Custom Integration
-For deeper integration or custom implementations, you can use the Xpectra client as an importable library:
+### SDK Methods
 
-```javascript
-import XpectraTracker from 'xpectra-tracker';
+| Method | Description | Example |
+|--------|-------------|---------|
+| `trackEvent(name, data)` | Track a custom event | `analytics.trackEvent('signup', { plan: 'premium' })` |
+| `identify(userId, traits)` | Identify a user | `analytics.identify('user123', { email: 'user@example.com' })` |
+| `trackPageView(page)` | Track a page view | `analytics.trackPageView('/products')` |
 
-const tracker = new XpectraTracker({
-  endpoint: 'https://xpectra-api.vercel.app/track',
-  siteId: 'YOUR_SITE_ID',
-  // Additional configuration options
-  trackClicks: true,
-  trackScroll: true,
-  sessionDuration: 30 // minutes
-});
+### Automatically Tracked Events
 
-// Use the tracker instance
-tracker.trackEvent('custom-event', { data: 'value' });
+The SDK automatically tracks:
+- Page views
+- Click events
+- Scroll depth (25%, 50%, 75%, 100%)
+- Time on page
+- Tab visibility changes
+
+### Dashboard Features
+
+- **Project Management**: Create and manage multiple tracking projects
+- **API Key Management**: Generate and rotate API keys for security
+- **Custom Date Ranges**: Analyze data over specific time periods
+- **Data Visualization**: Interactive charts and graphs
+- **Export Capabilities**: Download reports in various formats
+
+## 🛠️ Development
+
+### Building the SDK
+
+```bash
+cd xpectra-sdk
+npm install
+npm run build
 ```
 
-## Self-Hosting (For Developers)
+The compiled SDK will be available in the `xpectra-sdk/dist` directory.
 
-### Prerequisites
-- Node.js v14 or higher
-- Firebase account
-- Vercel account (recommended for hosting)
+### Customizing the Dashboard
 
-### Setup Process
-1. Clone the repository
-2. Configure Firebase credentials
-3. Deploy the server to Vercel
-4. Deploy the dashboard to Vercel
-5. Host the client tracking script on your server or CDN
+The dashboard is built with vanilla JavaScript, HTML, and CSS, making it easy to customize:
 
-See detailed development setup in the `/client`, `/server`, and `/dashboard` directories.
+- `dashboard/css/`: Styling files
+- `dashboard/js/`: Application logic
+- `dashboard/pages/`: Additional dashboard pages
 
-## Privacy Considerations
+## 🔒 Security
 
-Xpectra is designed with privacy in mind:
-- No cookies required (uses localStorage)
-- Minimal personal data collection
-- No cross-site tracking
-- Compliant with major privacy regulations (with proper configuration)
+Xpectra Analytics is designed with security in mind:
+- Data is transmitted securely over HTTPS
+- API keys can be rotated regularly
+- User authentication is handled via Firebase Auth
+- Personal data is stored according to privacy best practices
 
-## Support and Feedback
+## 📱 Browser Support
 
-For issues, feature requests, or contributions, please:
-- Create an issue on GitHub
-- Contact support at info@immersivex.in 
+Xpectra Analytics supports all modern browsers:
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+- Opera (latest)
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📬 Contact
+
+Have questions? Reach out to us:
+- Website: [xpectra.com](https://immersivex.in)
+- Email: info@immersivex.in
+- Twitter: [@XpectraAnalytics](https://twitter.com/XpectraAnalytics)
+
+---
+
+<div align="center">
+  <sub>Built with ❤️ by the IMMERSIVE X team</sub>
+</div> 

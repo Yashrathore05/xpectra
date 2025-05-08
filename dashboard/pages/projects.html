@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Xpectra Analytics Dashboard</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../assets/favicon.ico" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/projects.css">
+    
+    <!-- Auth Persistence - must be first -->
+    <script src="../js/auth-persistence.js"></script>
+</head>
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="../assets/logo.png" alt="Xpectra Logo">
+                    <h1>Xpectra</h1>
+                </div>
+                <button class="toggle-sidebar" id="toggleSidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="../index.html">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="projects.html">
+                            <i class="fas fa-project-diagram"></i>
+                            <span>Projects</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="settings.html">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="usage.html">
+                            <i class="fas fa-book"></i>
+                            <span>Usage Guide</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info hidden" id="userInfo">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <h3 id="userName">Guest</h3>
+                        <p id="userEmail">Not signed in</p>
+                    </div>
+                </div>
+                <button id="loginBtn" class="btn btn-primary">Sign In</button>
+                <button id="logoutBtn" class="btn btn-outline hidden">Sign Out</button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <div class="header-left">
+                    <h2>Projects</h2>
+                </div>
+                <div class="header-right">
+                    <button id="addNewProjectBtn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> New Project
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Welcome Section (visible when not logged in) -->
+            <div id="welcomeSection" class="welcome-section">
+                <div class="welcome-content">
+                    <h1>Manage Your Projects</h1>
+                    <p>Create and manage your tracked websites and applications.</p>
+                    <div class="welcome-actions">
+                        <button id="welcomeLoginBtn" class="btn btn-primary">
+                            Sign In
+                        </button>
+                        <button id="welcomeSignupBtn" class="btn btn-outline">
+                            Create Account
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Projects Content (visible when logged in) -->
+            <div id="projectsContent" class="projects-content hidden">
+                <div class="projects-container">
+                    <div class="projects-list" id="projectsList">
+                        <!-- Projects will be loaded here -->
+                        <div class="projects-loading">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Loading your projects...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="projects-empty hidden" id="projectsEmpty">
+                        <div class="empty-state">
+                            <i class="fas fa-project-diagram"></i>
+                            <h3>No Projects Yet</h3>
+                            <p>Create your first project to start tracking analytics.</p>
+                            <button id="emptyStateAddBtn" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Create First Project
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modals -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Sign In</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Sign In</button>
+                    </div>
+                    <div class="form-footer">
+                        <p>Don't have an account? <a href="#" id="showSignupModal">Sign Up</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Sign Up</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="signupName">Full Name</label>
+                        <input type="text" id="signupName" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email</label>
+                        <input type="email" id="signupEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" placeholder="Create a password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupConfirmPassword">Confirm Password</label>
+                        <input type="password" id="signupConfirmPassword" placeholder="Confirm your password" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Create Account</button>
+                    </div>
+                    <div class="form-footer">
+                        <p>Already have an account? <a href="#" id="showLoginModal">Sign In</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="addProjectModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Project</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addProjectForm">
+                    <div class="form-group">
+                        <label for="projectName">Project Name</label>
+                        <input type="text" id="projectName" placeholder="E.g., My Website" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectURL">Website URL</label>
+                        <input type="url" id="projectURL" placeholder="https://example.com" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Create Project</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="editProjectModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Project</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editProjectForm">
+                    <input type="hidden" id="editProjectId">
+                    <div class="form-group">
+                        <label for="editProjectName">Project Name</label>
+                        <input type="text" id="editProjectName" placeholder="E.g., My Website" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editProjectURL">Website URL</label>
+                        <input type="url" id="editProjectURL" placeholder="https://example.com" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="deleteProjectModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Delete Project</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this project? All analytics data associated with this project will be permanently deleted.</p>
+                <p class="text-danger"><strong>This action cannot be undone.</strong></p>
+                <form id="deleteProjectForm">
+                    <input type="hidden" id="deleteProjectId">
+                    <div class="form-group">
+                        <label for="confirmDelete">Type "DELETE" to confirm</label>
+                        <input type="text" id="confirmDelete" placeholder="DELETE" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" id="cancelDeleteBtn">Cancel</button>
+                        <button type="submit" class="btn btn-danger" id="confirmDeleteBtn" disabled>Delete Project</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+    
+    <!-- Scripts -->
+    <!-- Firebase App (required) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <!-- Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <!-- Firebase Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <!-- Firebase Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/projects.js"></script>
+    
+    <!-- Mobile navigation initialization -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize mobile navigation if on mobile device
+            if (window.innerWidth < 768) {
+                document.body.classList.add('mobile-view');
+                
+                // Check if the toggle button function exists and call it
+                if (typeof createMobileNavToggle === 'function') {
+                    createMobileNavToggle();
+                } else if (window.xpectraUI && window.xpectraUI.initUI) {
+                    // Initialize UI which will handle mobile navigation
+                    window.xpectraUI.initUI();
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

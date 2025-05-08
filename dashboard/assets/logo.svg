@@ -1,0 +1,31 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .logo-text {
+      font: bold 70px sans-serif;
+      fill: #2643c0;
+    }
+    .graph-line {
+      stroke: #4361ee;
+      stroke-width: 6;
+      stroke-linecap: round;
+    }
+    .pulse-circle {
+      fill: #4361ee;
+    }
+  </style>
+  
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="90" fill="#ffffff" stroke="#4361ee" stroke-width="4"/>
+  
+  <!-- Graph lines representing analytics -->
+  <polyline class="graph-line" points="40,140 60,100 80,120 100,60 120,90 140,40 160,70"/>
+  
+  <!-- Pulse point at the end -->
+  <circle class="pulse-circle" cx="160" cy="70" r="8">
+    <animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="1;0.6;1" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- X for Xpectra -->
+  <text x="85" y="170" class="logo-text">X</text>
+</svg> 

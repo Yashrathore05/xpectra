@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xpectra Analytics SDK Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            padding: 10px;
+            overflow: auto;
+        }
+        #eventLog {
+            height: 300px;
+            overflow-y: scroll;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Xpectra Analytics SDK Example</h1>
+        
+        <div class="card">
+            <h2>SDK Integration</h2>
+            <p>This page demonstrates the Xpectra Analytics SDK integration.</p>
+            <pre>// Initialize Xpectra
+const analytics = new XpectraAnalytics({
+    apiKey: 'demo-api-key',
+    endpoint: 'https://api.xpectra.com/collect',
+    debug: true
+});</pre>
+        </div>
+        
+        <div class="card">
+            <h2>Track Custom Events</h2>
+            <button id="customEventBtn">Track Custom Event</button>
+            <button id="identifyBtn">Identify User</button>
+        </div>
+        
+        <div class="card">
+            <h2>Event Log</h2>
+            <pre id="eventLog"></pre>
+        </div>
+    </div>
+
+    <!-- Load Xpectra SDK -->
+    <script src="dist/xpectra.min.js"></script>
+    
+    <script>
+        // Override the endpoint to avoid actual API calls in this demo
+        const mockEndpoint = 'https://mockapi.xpectra.com/collect';
+        
+        // Initialize Xpectra Analytics
+        const analytics = new XpectraAnalytics({
+            apiKey: 'demo-api-key',
+            endpoint: mockEndpoint,
+            debug: true
+        });
+        
+        // Mock the fetch API to log events instead of sending them
+        const originalFetch = window.fetch;
+        window.fetch = function(url, options) {
+            if (url === mockEndpoint) {
+                const payload = JSON.parse(options.body);
+                logEvent('API Call', payload);
+                return Promise.resolve({
+                    ok: true,
+                    json: () => Promise.resolve({ success: true })
+                });
+            }
+            return originalFetch(url, options);
+        };
+        
+        // Override navigator.sendBeacon for the same reason
+        const originalSendBeacon = navigator.sendBeacon;
+        navigator.sendBeacon = function(url, data) {
+            if (url === mockEndpoint) {
+                const payload = JSON.parse(data);
+                logEvent('Beacon Call', payload);
+                return true;
+            }
+            return originalSendBeacon(url, data);
+        };
+        
+        // Set up event listeners for buttons
+        document.getElementById('customEventBtn').addEventListener('click', function() {
+            analytics.trackEvent('button_click', {
+                buttonId: 'customEventBtn',
+                action: 'Track Custom Event'
+            });
+        });
+        
+        document.getElementById('identifyBtn').addEventListener('click', function() {
+            const userId = 'user-' + Math.floor(Math.random() * 1000);
+            analytics.identify(userId, {
+                email: `${userId}@example.com`,
+                plan: 'free'
+            });
+        });
+        
+        // Log events to the UI
+        function logEvent(type, data) {
+            const logElement = document.getElementById('eventLog');
+            const entry = document.createElement('div');
+            
+            const timestamp = new Date().toISOString();
+            entry.innerHTML = `[${timestamp}] ${type}: ${JSON.stringify(data, null, 2)}`;
+            
+            logElement.prepend(entry);
+        }
+        
+        // Override console.log to show SDK debug messages in our UI
+        const originalConsoleLog = console.log;
+        console.log = function(...args) {
+            if (args[0] === '[Xpectra]') {
+                const message = args.slice(1).join(' ');
+                logEvent('SDK Log', message);
+            }
+            originalConsoleLog.apply(console, args);
+        };
+        
+        // Generate some content to enable scrolling
+        const container = document.querySelector('.container');
+        for (let i = 0; i < 10; i++) {
+            const section = document.createElement('div');
+            section.className = 'card';
+            section.innerHTML = `
+                <h2>Section ${i + 1}</h2>
+                <p>This is a dummy section to demonstrate scroll tracking. 
+                Scroll down to see how the SDK tracks scroll depth.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Nullam euismod, nisi vel consectetur euismod, nisl nisl 
+                consectetur nisl, eget consectetur nisl nisl eget nisl.</p>
+            `;
+            container.appendChild(section);
+        }
+    </script>
+</body>
+</html> 
